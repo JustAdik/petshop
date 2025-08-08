@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${user.name}"></span>!</h1>
+<p>Your balance: <span th:text="${user.balance}"></span> ₸</p>
+<h2>Top up balance:</h2>
+<form th:action="@{/top-up}" method="post">
+    <input type="number" name="amount" placeholder="Sum (₸)" required />
+    <button type="submit">Top up</button>
+</form>
+
+<h2>Add product:</h2>
+<form th:action="@{/add}" method="post">
+    <input type="text" name="name" placeholder="Product name" required />
+    <input type="number" name="price" placeholder="Price" required />
+    <button type="submit">Add</button>
+</form>
+
+<ul>
+    <li th:each="p : ${products}">
+        <form th:action="@{/buy}" method="post">
+            <span th:text="${p.name}"></span> —
+            <span th:text="${p.price}"></span> ₸
+            <input type="hidden" name="id" th:value="${p.id}" />
+            <button type="submit">Buy</button>
+        </form>
+    </li>
+</ul>
+
+<p th:if="${message}" style="color: green;" th:text="${message}"></p>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>PetShop</title>
+</head>
+<body>
+<h1>Добро пожаловать в магазин!</h1>
+
+<p>Имя: <b th:text="${user.name}"></b></p>
+<p>Баланс: <b th:text="${user.balance}"></b> ₸</p>
+
+<form th:action="@{/topup}" method="post">
+  <input type="number" name="amount" placeholder="Сколько пополнить?" required />
+  <button type="submit">Пополнить</button>
+</form>
+
+<h2>Товары:</h2>
+<ul>
+  <li th:each="product : ${products}">
+    <span th:text="${product.name}"></span> —
+    <span th:text="${product.price}"></span> ₸
+    <form th:action="@{/buy}" method="post">
+      <input type="hidden" name="id" th:value="${product.id}" />
+      <button type="submit">Купить</button>
+    </form>
+  </li>
+</ul>
+
+<p style="color: green;" th:text="${message}"></p>
+</body>
+</html>
