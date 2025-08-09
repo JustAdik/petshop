@@ -1,18 +1,20 @@
 package com.example.petshop.service;
 
-
 import com.example.petshop.model.AppUser;
 import com.example.petshop.repository.AppUserRepository;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
     private final AppUserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AppUserDetailsService(AppUserRepository repository) {
+    public AppUserDetailsService(AppUserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,7 +25,21 @@ public class AppUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getRole()) // Spring автоматически добавит "ROLE_"
+                .roles(user.getRole().replace("ROLE_", ""))
                 .build();
+    }
+
+    public void registerUser(String username, String password) {
+        AppUser user = new AppUser();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+
+        if (username.equalsIgnoreCase("admin")) {
+            user.setRole("ROLE_ADMIN");
+        } else {
+            user.setRole("ROLE_USER");
+        }
+
+        repository.save(user);
     }
 }

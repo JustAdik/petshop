@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+            xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
 <head>
   <meta charset="UTF-8">
   <title>PetShop</title>
@@ -26,6 +29,15 @@
     </form>
   </li>
 </ul>
+
+<div sec:authorize="hasRole('ADMIN')">
+  <h3>Добавить товар</h3>
+  <form th:action="@{/add}" method="post">
+    <input type="text" name="name" placeholder="Название" required/>
+    <input type="number" name="price" placeholder="Цена" required/>
+    <button type="submit">Добавить</button>
+  </form>
+</div>
 
 <p style="color: green;" th:text="${message}"></p>
 </body>

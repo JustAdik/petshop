@@ -23,7 +23,7 @@ public class ShopController {
 
     @GetMapping("/")
     public String index(Model model) {
-        AppUser currentUser = shopService.getCurrentUser(); // или твой метод
+        AppUser currentUser = shopService.getCurrentUser();
         model.addAttribute("user", currentUser);
         model.addAttribute("products", shopService.getProducts());
         return "index";

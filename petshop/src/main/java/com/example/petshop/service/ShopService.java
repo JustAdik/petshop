@@ -36,14 +36,14 @@ public class ShopService {
 
     @PostConstruct
     public void init() {
-        // Создаём тестовые аккаунты, если их нет
+
         if (appUserRepository.count() == 0) {
             AppUser user = new AppUser("user", passwordEncoder.encode("1234"), "USER", 100_000);
             AppUser admin = new AppUser("admin", passwordEncoder.encode("admin"), "ADMIN", 500_000);
             appUserRepository.saveAll(List.of(user, admin));
         }
 
-        // Создаём тестовые товары, если их нет
+
         if (productRepository.count() == 0) {
             productRepository.saveAll(List.of(
                     new Product("iPhone13", 285_000),
