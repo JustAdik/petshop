@@ -1,5 +1,4 @@
 
-
 package com.example.petshop.config;
 
 import com.example.petshop.service.AppUserDetailsService;
@@ -48,4 +47,3 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
-

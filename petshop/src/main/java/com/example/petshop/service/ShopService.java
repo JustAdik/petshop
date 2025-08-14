@@ -1,22 +1,19 @@
 package com.example.petshop.service;
 
-import com.example.petshop.config.SecurityConfig;
 import com.example.petshop.model.AppUser;
 import com.example.petshop.model.Product;
 import com.example.petshop.repository.AppUserRepository;
 import com.example.petshop.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ShopService {
@@ -90,5 +87,21 @@ public class ShopService {
     public void addProduct(String name, int price) {
         productRepository.save(new Product(name, price));
     }
-}
 
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+}
