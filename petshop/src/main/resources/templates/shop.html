@@ -5,85 +5,110 @@
 <head>
   <meta charset="UTF-8">
   <title>PetShop</title>
+  <!-- Подключение Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>Добро пожаловать в магазин!</h1>
+<body class="bg-light">
 
+<!-- 🔹 Навбар (шапка) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">🐾 PetShop</a>
 
-<p>Имя: <b th:text="${user.name}"></b></p>
-<p>Баланс: <b th:text="${user.balance}"></b> ₸</p>
+    <div class="d-flex align-items-center">
+      <span class="text-white me-3">
+        👤 <b th:text="${user.name}"></b> | 💰 <b th:text="${user.balance}"></b> ₸
+      </span>
 
-<!-- Форма пополнения баланса -->
-<form th:action="@{/topup}" method="post">
-  <input type="number" name="amount" placeholder="Сколько пополнить?" required />
-  <button type="submit">Пополнить</button>
-</form>
-
-<h2>Товары:</h2>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>Изображение</th>
-    <th>Название</th>
-    <th>Описание</th>
-    <th>Цена</th>
-    <th>Действия</th>
-    <th>Загрузить картинку</th>
-  </tr>
-
-
-  <tr th:each="product : ${products}">
-    <td>
-      <!-- Картинка товара  -->
-      <img th:if="${product.imageUrl != null}"
-           th:src="@{'/' + ${product.imageUrl}}"
-           alt="product image" width="200">
-    </td>
-
-    <!-- Название, описание, цена -->
-    <td th:text="${product.name}"></td>
-    <td th:text="${product.description}"></td>
-    <td th:text="${product.price}"></td>
-
-    <td>
-      <!-- Купить -->
-      <form th:action="@{/buy}" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${product.id}" />
-        <button type="submit">Купить</button>
+      <!-- Кнопка пополнения -->
+      <form th:action="@{/topup}" method="post" class="d-flex me-2">
+        <input type="number" name="amount" placeholder="Сумма" required class="form-control form-control-sm me-2"/>
+        <button type="submit" class="btn btn-warning btn-sm">Пополнить</button>
       </form>
 
-      <!-- Редактировать/Удалить -->
-      <span sec:authorize="hasRole('ADMIN')">
-        <a th:href="@{'/edit/' + ${product.id}}">Редактировать</a>
-        <a th:href="@{'/delete/' + ${product.id}}"
-           onclick="return confirm('Удалить товар?')">Удалить</a>
-      </span>
-    </td>
+      <!-- Кнопка выхода -->
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
+      </form>
+    </div>
+  </div>
+</nav>
 
-    <td>
-      <!-- Картинки (только для админа) -->
-      <div sec:authorize="hasRole('ADMIN')">
-        <form th:action="@{/products/upload}" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="productId" th:value="${product.id}">
-          <input type="file" name="file" accept="image/*">
-          <button type="submit">Загрузить</button>
+<div class="container">
+
+  <h2 class="mb-3">📦 Товары</h2>
+  <table class="table table-bordered table-striped align-middle text-center shadow">
+    <thead class="table-dark">
+    <tr>
+      <th>Изображение</th>
+      <th>Название</th>
+      <th>Описание</th>
+      <th>Цена</th>
+      <th>Действия</th>
+      <th sec:authorize="hasRole('ADMIN')">Загрузить картинку</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="product : ${products}">
+      <td>
+        <img th:if="${product.imageUrl != null}"
+             th:src="@{'/' + ${product.imageUrl}}"
+             alt="product image" width="120" class="img-thumbnail">
+      </td>
+      <td th:text="${product.name}"></td>
+      <td th:text="${product.description}"></td>
+      <td><span class="badge bg-success" th:text="${product.price} + ' ₸'"></span></td>
+      <td>
+        <!-- Кнопка купить -->
+        <form th:action="@{/buy}" method="post" style="display:inline;">
+          <input type="hidden" name="id" th:value="${product.id}" />
+          <button type="submit" class="btn btn-sm btn-primary">Купить</button>
         </form>
-      </div>
-    </td>
-  </tr>
-</table>
 
-<!-- Админ часть -->
-<div sec:authorize="hasRole('ADMIN')">
-  <h3>Добавить товар</h3>
-  <form th:action="@{/save}" method="post">
-    <input type="text" name="name" placeholder="Название" required/>
-    <input type="number" name="price" placeholder="Цена" required/>
-    <input type="text" name="description" placeholder="Описание"/>
-    <button type="submit">Добавить</button>
-  </form>
+        <!-- Админ кнопки -->
+        <span sec:authorize="hasRole('ADMIN')">
+          <a th:href="@{'/edit/' + ${product.id}}" class="btn btn-sm btn-warning">Изменить</a>
+          <a th:href="@{'/delete/' + ${product.id}}"
+             onclick="return confirm('Удалить товар?')"
+             class="btn btn-sm btn-danger">Удалить</a>
+        </span>
+      </td>
+
+      <!-- Админ загрузка -->
+      <td sec:authorize="hasRole('ADMIN')">
+        <form th:action="@{/products/upload}" method="post" enctype="multipart/form-data" class="d-flex">
+          <input type="hidden" name="productId" th:value="${product.id}">
+          <input type="file" name="file" accept="image/*" class="form-control form-control-sm me-2">
+          <button type="submit" class="btn btn-sm btn-secondary">Загрузить</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- 🔹 Админ: добавить товар -->
+  <div sec:authorize="hasRole('ADMIN')" class="mt-4">
+    <h3>➕ Добавить товар</h3>
+    <form th:action="@{/save}" method="post" class="row g-2">
+      <div class="col-md-3">
+        <input type="text" name="name" placeholder="Название" required class="form-control"/>
+      </div>
+      <div class="col-md-2">
+        <input type="number" name="price" placeholder="Цена" required class="form-control"/>
+      </div>
+      <div class="col-md-4">
+        <input type="text" name="description" placeholder="Описание" class="form-control"/>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Добавить</button>
+      </div>
+    </form>
+  </div>
+
 </div>
 
-<!-- Сообщения (например "покупка успешна") -->
-<p style="color: green;" th:text="${message}"></p>
+<p class="text-success text-center mt-3 fw-bold" th:text="${message}"></p>
+
 </body>
 </html>
