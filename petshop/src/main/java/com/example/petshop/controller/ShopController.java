@@ -2,18 +2,35 @@ package com.example.petshop.controller;
 
 import com.example.petshop.model.AppUser;
 import com.example.petshop.model.Product;
+import com.example.petshop.repository.ProductRepository;
 import com.example.petshop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Controller
 public class ShopController {
 
     @Autowired
     private ShopService shopService;
+
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ShopController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     // магаз
     @GetMapping("/shop")
@@ -99,4 +116,29 @@ public class ShopController {
         shopService.deleteProduct(id);
         return "redirect:/shop";
     }
+
+    //картинки
+    @PostMapping("/products/upload")
+    public String uploadImage(@RequestParam("productId") Long productId,
+                              @RequestParam("file") MultipartFile file,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            String uploadDir = "C:/Users/Адилет/Desktop/Новая папка/";
+            String fileName = file.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + fileName);
+            Files.write(filePath, file.getBytes());
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+            product.setImageUrl("uploads/" + fileName);
+            productRepository.save(product);
+
+            redirectAttributes.addFlashAttribute("message", "Картинка успешно загружена!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Ошибка загрузки файла!");
+        }
+        return "redirect:/shop";
+    }
+
 }

@@ -1,34 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Форма товара</title>
+  <title>Товар</title>
 </head>
 <body>
-<h1>Добавить или отредактировать товар</h1>
+<h2 th:text="${product.id} != null ? 'Редактировать товар' : 'Новый товар'">Товар</h2>
 
-<form th:action="@{/save}" method="post">
-
-  <input type="hidden" name="id" th:value="${product?.id}" />
-
-  <label>Название:</label><br>
-  <input type="text" name="name" th:value="${product?.name}" required /><br><br>
-
-  <label>Цена:</label><br>
-
-  <input type="number" name="price" th:value="${product?.price}" step="1" required /><br><br>
-
-  <label>Описание:</label><br>
-  <textarea name="description" th:text="${product?.description}"></textarea><br><br>
-
-
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
+<form th:action="@{/save}" method="post" th:object="${product}">
+  <input type="hidden" th:field="*{id}" />
+  <div>
+    <label>Название:</label>
+    <input th:field="*{name}" required/>
+  </div>
+  <div>
+    <label>Цена:</label>
+    <input type="number" th:field="*{price}" required/>
+  </div>
+  <div>
+    <label>Описание:</label>
+    <input th:field="*{description}" />
+  </div>
   <button type="submit">Сохранить</button>
+  <a href="/shop">Назад</a>
 </form>
-
-<br>
-<a th:href="@{/shop}">Назад в магазин</a>
 </body>
 </html>
-

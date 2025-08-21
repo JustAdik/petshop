@@ -9,9 +9,11 @@
 <body>
 <h1>Добро пожаловать в магазин!</h1>
 
+
 <p>Имя: <b th:text="${user.name}"></b></p>
 <p>Баланс: <b th:text="${user.balance}"></b> ₸</p>
 
+<!-- Форма пополнения баланса -->
 <form th:action="@{/topup}" method="post">
   <input type="number" name="amount" placeholder="Сколько пополнить?" required />
   <button type="submit">Пополнить</button>
@@ -20,33 +22,57 @@
 <h2>Товары:</h2>
 <table border="1" cellpadding="5">
   <tr>
+    <th>Изображение</th>
     <th>Название</th>
+    <th>Описание</th>
     <th>Цена</th>
     <th>Действия</th>
+    <th>Загрузить картинку</th>
   </tr>
+
+
   <tr th:each="product : ${products}">
-    <td th:text="${product.name}"></td>
-    <td th:text="${product.price}"></td>
     <td>
-      <!-- Кнопка купить для всех -->
+      <!-- Картинка товара  -->
+      <img th:if="${product.imageUrl != null}"
+           th:src="@{'/' + ${product.imageUrl}}"
+           alt="product image" width="200">
+    </td>
+
+    <!-- Название, описание, цена -->
+    <td th:text="${product.name}"></td>
+    <td th:text="${product.description}"></td>
+    <td th:text="${product.price}"></td>
+
+    <td>
+      <!-- Купить -->
       <form th:action="@{/buy}" method="post" style="display:inline;">
         <input type="hidden" name="id" th:value="${product.id}" />
         <button type="submit">Купить</button>
       </form>
 
-
-      <!-- Редактировать/Удалить-->
+      <!-- Редактировать/Удалить -->
       <span sec:authorize="hasRole('ADMIN')">
-<a th:href="@{'/edit/' + ${product.id}}">Редактировать</a>
-<a th:href="@{'/delete/' + ${product.id}}"
-   onclick="return confirm('Удалить товар?')">Удалить</a>
+        <a th:href="@{'/edit/' + ${product.id}}">Редактировать</a>
+        <a th:href="@{'/delete/' + ${product.id}}"
+           onclick="return confirm('Удалить товар?')">Удалить</a>
       </span>
+    </td>
+
+    <td>
+      <!-- Картинки (только для админа) -->
+      <div sec:authorize="hasRole('ADMIN')">
+        <form th:action="@{/products/upload}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="productId" th:value="${product.id}">
+          <input type="file" name="file" accept="image/*">
+          <button type="submit">Загрузить</button>
+        </form>
+      </div>
     </td>
   </tr>
 </table>
 
-
-<!-- Админ часть-->
+<!-- Админ часть -->
 <div sec:authorize="hasRole('ADMIN')">
   <h3>Добавить товар</h3>
   <form th:action="@{/save}" method="post">
@@ -57,6 +83,7 @@
   </form>
 </div>
 
+<!-- Сообщения (например "покупка успешна") -->
 <p style="color: green;" th:text="${message}"></p>
 </body>
 </html>
