@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>История покупок</title>
+</head>
+<body>
+<h1>История покупок</h1>
+
+<table border="1">
+  <tr>
+    <th>Товар</th>
+    <th>Цена</th>
+    <th>Количество</th>
+    <th>Дата</th>
+  </tr>
+  <tr th:each="h : ${history}">
+    <td th:text="${h.product.name}"></td>
+    <td th:text="${h.price}"></td>
+    <td th:text="${h.quantity}"></td>
+    <td th:text="${h.purchaseDate}"></td>
+  </tr>
+</table>
+
+<a href="/shop">Назад в магазин</a>
+</body>
+</html>
