@@ -1,4 +1,4 @@
-<img width="1635" height="808" alt="Снимок экрана 2026-06-28 060647" src="https://github.com/user-attachments/assets/530797bf-4694-42c2-b673-8df4bf59421f" />A full-stack pet shop web application built with Java, Spring Boot, Spring Security, Spring Data JPA, Thymeleaf, and PostgreSQL.
+A full-stack pet shop web application built with Java, Spring Boot, Spring Security, Spring Data JPA, Thymeleaf, and PostgreSQL.
 
 The project demonstrates authentication, authorization, product management, purchasing, balance operations, and an admin panel using a layered Spring Boot architecture.
 
