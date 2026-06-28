@@ -1,4 +1,4 @@
-A full-stack pet shop web application built with Java, Spring Boot, Spring Security, Spring Data JPA, Thymeleaf, and PostgreSQL.
+<img width="1635" height="808" alt="Снимок экрана 2026-06-28 060647" src="https://github.com/user-attachments/assets/530797bf-4694-42c2-b673-8df4bf59421f" />A full-stack pet shop web application built with Java, Spring Boot, Spring Security, Spring Data JPA, Thymeleaf, and PostgreSQL.
 
 The project demonstrates authentication, authorization, product management, purchasing, balance operations, and an admin panel using a layered Spring Boot architecture.
 
@@ -36,28 +36,11 @@ The project demonstrates authentication, authorization, product management, purc
 
 ## Screenshots
 
-- Login Page
-<img width="1600" height="860" alt="image" src="https://github.com/user-attachments/assets/57779d9d-541d-4f9e-a36b-868cbb9d8157" />
+- User Page
+<img width="1600" height="794" alt="image" src="https://github.com/user-attachments/assets/82776aba-6217-47ef-91c6-30b0ca80ccf1" />
 
-- Register Page
-<img width="1600" height="860" alt="image" src="https://github.com/user-attachments/assets/c6099bf3-2d36-4e58-9040-c91ef443d36e" />
-
-- Main Dashboard
-<img width="1600" height="854" alt="image" src="https://github.com/user-attachments/assets/cb1f30be-be1f-4c66-9869-ed435e2a0c17" />
-
-- Money Transfer
-<img width="1600" height="856" alt="image" src="https://github.com/user-attachments/assets/5081bb79-be6a-4846-b010-dfbc42ea5506" />
-
-- Transaction History
-<img width="1600" height="867" alt="image" src="https://github.com/user-attachments/assets/d36f9768-ea81-4e00-8d4a-9a7585afa4e6" />
-
-- Search user Page
-<img width="1600" height="856" alt="image" src="https://github.com/user-attachments/assets/d88b4a5f-0062-48bd-9a02-3d8c2173fb26" />
-
-- Chat page
-<img width="1600" height="860" alt="image" src="https://github.com/user-attachments/assets/30072fef-57d8-436f-b625-f1e218951487" />
-
-
+- Admin Page
+<img width="1600" height="790" alt="image" src="https://github.com/user-attachments/assets/93f7133c-bf0f-4798-909e-45483e645905" />
 
 
 ## Project Structure
